@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"os"
+	"strings"
 
 	"config"
 
@@ -11,7 +12,11 @@ import (
 
 func main() {
 	config.InitializeEnv()
-	PORT := os.Getenv("PORT")
+
+	PORT := strings.TrimSpace(os.Getenv("PORT"))
+	DB := strings.TrimSpace(os.Getenv("DB"))
+
+	config.DBConnection(DB)
 	router := gin.Default()
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
